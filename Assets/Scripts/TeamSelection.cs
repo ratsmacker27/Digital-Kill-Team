@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TeamSelection : MonoBehaviour
 {
@@ -9,8 +10,14 @@ public class TeamSelection : MonoBehaviour
     public int Team2Roll = 0;
     public bool Team1Turn = false;
     public bool Team2Turn = false;
+    public GameObject team1Announcement;
+    public GameObject team2Announcement;
+    private float timeToDisappear = 3f;
+
+
     // Start is called before the first frame update
-    void Start()
+
+    void Update()
     {
         while (Team1Roll == Team2Roll)
         {
@@ -23,12 +30,22 @@ public class TeamSelection : MonoBehaviour
         if (Team1Roll > Team2Roll)
         {
             Team1Turn = true;
-            Debug.Log("Team 1 Turn");
+            team1Announcement.transform.gameObject.SetActive(true);
+            if (Time.time >= timeToDisappear)
+            {
+                team1Announcement.transform.gameObject.SetActive(false);
+            }
+
         }
         if (Team1Roll < Team2Roll)
         {
-            Debug.Log("Team 2 Turn");
             Team2Turn = true;
+            team2Announcement.transform.gameObject.SetActive(true);
+            if (Time.time >= timeToDisappear)
+            {
+                team2Announcement.transform.gameObject.SetActive(false);
+            }
+
         }
     }
     public bool GetTeam1()

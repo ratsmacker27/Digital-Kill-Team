@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Shoot : MonoBehaviour
@@ -14,7 +16,16 @@ public class Shoot : MonoBehaviour
     public int criticalSave; // Save against critical hits
     public LayerMask clickable; // Only the layer with clickable areas
     public LayerMask Terrain; // Layer for terrain
+    public TMP_Text initialHealthText;
+    public GameObject initialHealth;
+    public TMP_Text hitsText;
+    public GameObject hitsObject;
+    public TMP_Text savesText;
+    public GameObject savesObject;
+    public TMP_Text finalHealthText;
+    public GameObject finalHealth;
     // Start is called before the first frame update
+
     void Start()
     {
         cam = Camera.main; // Initialises the camera as the main camera
@@ -26,7 +37,7 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((shootingMode == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getShootingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetRangedWeapon() == true))
+        if ((shootingMode == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getShootingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true))
         { // If in shooting mode and operative has an engage order and action hasn't been used with the operative and the operative's weapon is ranged
 
             if (Input.GetMouseButtonDown(0)) //User presses down the left click
@@ -40,23 +51,13 @@ public class Shoot : MonoBehaviour
                     //Hit operative isn't in the same team as operative selected
                     {
                         Debug.Log(hit.transform.gameObject.ToString()); // Debug Line to show hit operative
-                        Debug.Log("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative
-                        Vector3 fromPosition = OperativeSelected.Instance.operativeSelected[0].transform.position; // From the Operative that is shooting
-                        Vector3 toPosition = hit.transform.position; // To the Operative hit
-                        if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hitInfo, Terrain)) // If there is a terrain inbetween the operative shooting and the operative hit
-                        {
-                            if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude)-hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
-                            {
-                                Debug.Log("Blocked");
-                                normalHits -= 1; 
-                            }
-                        }
-                        for (var i = 0; i < OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetAttacks(); i++) // For loop for each attack of the weapon
+                        initialHealthText.text = ("Initial Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative
+                        for (var i = 0; i < OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetAttacks(); i++) // For loop for each attack of the weapon
                         {
 
                             int randomInt = Random.Range(1, 7); // Rolls a dice
                             Debug.Log(randomInt.ToString()); //Line for debugging rolls
-                            if (randomInt >= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetAttackRoll() && randomInt < 6) // If the dice is more or equal to Attack Roll but less than six
+                            if (randomInt >= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetAttackRoll() && randomInt < 6) // If the dice is more or equal to Attack Roll but less than six
                             {
                                 normalHits += 1; // Add to the normal damage count
                             }
@@ -64,7 +65,9 @@ public class Shoot : MonoBehaviour
                             {
                                 criticalHits += 1; // Add to the critical damage count
                             }
+                            
                         }
+                        hitsText.text = ("Normal Hits and Critical Hits: " + normalHits + ", " + criticalHits);
                         for (var x = 0; x < hit.transform.gameObject.GetComponent<Operative>().GetDefenceDice(); x++) // For how many defence dice the enemy operative has
                         {
                             int randomInt = Random.Range(1, 7); //Rolls a dice
@@ -77,7 +80,9 @@ public class Shoot : MonoBehaviour
                             {
                                 criticalSave += 1; // Add to the critical save count
                             }
+                            
                         }
+                        savesText.text = ("Normal Saves and Critical Saves: " + normalSave + ", " + criticalSave);
                         for (var x = 0; x < criticalHits; x++) // For how many critical hits, deal damage equal to the value of the critical hits
                         {
                             if (criticalSave > 0) // If there are critical saves
@@ -95,11 +100,33 @@ public class Shoot : MonoBehaviour
                                 else //No saves
                                 {
                                     //Deal damage to the operative
-                                    hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetCriticalDamage());
+                                    hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetCriticalDamage());
                                 }
 
                             }
 
+                        }
+                        Vector3 fromPosition = OperativeSelected.Instance.operativeSelected[0].transform.position; // From the Operative that is shooting
+                        Vector3 toPosition = hit.transform.position; // To the Operative hit
+
+                        if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hitInfo, Terrain)) // If there is a terrain inbetween the operative shooting and the operative hit
+                        {
+                            if (hit.transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true)
+                            {
+                                if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude) - hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
+                                {
+                                    Debug.Log("Blocked");
+                                    normalHits -= 1;
+                                }
+                            }
+                            if (hit.transform.gameObject.GetComponent<Operative>().getConcealOrder() == true)
+                            {
+                                if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude) - hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
+                                {
+                                    normalHits = 0;
+                                    criticalHits = 0;
+                                }
+                            }
                         }
                         for (var x = 0; x < normalHits; x++) // For how many normal hits, deal damage equal to the value of the normal hits
                         {
@@ -118,11 +145,11 @@ public class Shoot : MonoBehaviour
                                 else
                                 {
                                     //Deal damage to the operative
-                                    hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetNormalDamage());
+                                    hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetNormalDamage());
                                 }
                             }
                         }
-                        Debug.Log("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative after the attack
+                        finalHealthText.text = ("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative after the attack
                         shootingMode = false; //Disables shooting mode
                         criticalHits = 0; // Resets critical hits count
                         normalHits = 0; // Resets normal hits count
@@ -137,6 +164,10 @@ public class Shoot : MonoBehaviour
                     }
                 }
             }
+        }
+        else
+        {
+            shootingMode = false;//Disables shooting mode
         }
     }
 }

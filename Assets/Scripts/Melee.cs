@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Melee : MonoBehaviour
@@ -13,7 +14,15 @@ public class Melee : MonoBehaviour
     public int normalSave;
     public int criticalSave;
     public LayerMask clickable; // Only the layer with clickable areas
-    // Start is called before the first frame update
+                                // Start is called before the first frame update
+    public TMP_Text initialHealthText;
+    public GameObject initialHealth;
+    public TMP_Text hitsText;
+    public GameObject hitsObject;
+    public TMP_Text savesText;
+    public GameObject savesObject;
+    public TMP_Text finalHealthText;
+    public GameObject finalHealth;
     void Start()
     {
         cam = Camera.main;
@@ -25,7 +34,7 @@ public class Melee : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((meleeMode) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetMeleeWeapon() == true))
+        if ((meleeMode) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true))
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -37,12 +46,12 @@ public class Melee : MonoBehaviour
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y));
                     if (distance <= 1)
                     {
-                        Debug.Log("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative
-                        for (var i = 0; i < OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetAttacks(); i++) // For loop for each attack of the weapon
+                        initialHealthText.text = ("Initial Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative
+                        for (var i = 0; i < OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetAttacks(); i++) // For loop for each attack of the weapon
                         {
                             int randomInt = Random.Range(1, 7); // Rolls a dice
                             Debug.Log(randomInt.ToString());
-                            if (randomInt >= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetAttackRoll() && randomInt < 6) // If the dice is more or equal to Attack Roll but less than six
+                            if (randomInt >= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetAttackRoll() && randomInt < 6) // If the dice is more or equal to Attack Roll but less than six
                             {
                                 normalHits += 1; // Add to the normal damage list
                             }
@@ -50,7 +59,9 @@ public class Melee : MonoBehaviour
                             {
                                 criticalHits += 1; // Add to the critical damage list
                             }
+
                         }
+                        hitsText.text = ("Normal Hits and Critical Hits: " + normalHits + ", " + criticalHits);
                         for (var x = 0; x < hit.transform.gameObject.GetComponent<Operative>().GetDefenceDice(); x++)
                         {
                             int randomInt = Random.Range(1, 7);
@@ -64,6 +75,7 @@ public class Melee : MonoBehaviour
                                 criticalSave += 1; // Add to the critical damage list
                             }
                         }
+                        savesText.text = ("Normal Saves and Critical Saves: " + normalSave + ", " + criticalSave);
                         for (var x = 0; x < criticalHits; x++) // For how many critical hits, deal damage equal to the value of the critical hits
                         {
                             if (criticalSave > 0)
@@ -76,7 +88,7 @@ public class Melee : MonoBehaviour
                             }
                             else
                             {
-                                hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetCriticalDamage());
+                                hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetCriticalDamage());
                             }
 
                         }
@@ -88,10 +100,10 @@ public class Melee : MonoBehaviour
                             }
                             else
                             {
-                                hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetNormalDamage());
+                                hit.transform.gameObject.GetComponent<Operative>().SetWounds(OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetNormalDamage());
                             }
                         }
-                        Debug.Log("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative after the attack
+                        finalHealthText.text = ("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative after the attack
                         meleeMode = false; //Disables shooting mode
                         criticalHits = 0; // Resets critical hits count
                         normalHits = 0; // Resets normal hits count
@@ -99,6 +111,10 @@ public class Melee : MonoBehaviour
                         criticalSave = 0;
                         OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
                         OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setMeleeUsed();
+                    }
+                    else
+                    {
+                        meleeMode = false;
                     }
                 }
             }
