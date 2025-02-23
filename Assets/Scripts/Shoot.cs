@@ -21,13 +21,13 @@ public class Shoot : MonoBehaviour
     }
     public void ToggleShootingMode() 
     {
-        shootingMode = !shootingMode;
+        shootingMode = !shootingMode; // Changes the shooting mode 
     }
     // Update is called once per frame
     void Update()
     {
-        if ((shootingMode == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getShootingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetRangedWeapon() == true)) // If in shooting mode and operative has an engage order and action hasn't been used with the operative and the operative's weapon is ranged
-        {
+        if ((shootingMode == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getShootingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetRangedWeapon() == true))
+        { // If in shooting mode and operative has an engage order and action hasn't been used with the operative and the operative's weapon is ranged
 
             if (Input.GetMouseButtonDown(0)) //User presses down the left click
             {
@@ -41,14 +41,14 @@ public class Shoot : MonoBehaviour
                     {
                         Debug.Log(hit.transform.gameObject.ToString()); // Debug Line to show hit operative
                         Debug.Log("Wounds: " + hit.transform.gameObject.GetComponent<Operative>().GetWounds().ToString()); // Debug Line to show wounds of hit operative
-                        Vector3 fromPosition = OperativeSelected.Instance.operativeSelected[0].transform.position;
-                        Vector3 toPosition = hit.transform.position;
-                        if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hitInfo, Terrain))
+                        Vector3 fromPosition = OperativeSelected.Instance.operativeSelected[0].transform.position; // From the Operative that is shooting
+                        Vector3 toPosition = hit.transform.position; // To the Operative hit
+                        if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hitInfo, Terrain)) // If there is a terrain inbetween the operative shooting and the operative hit
                         {
-                            if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude)-hitInfo.distance) <= 1) //Cover Rule
+                            if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude)-hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
                             {
                                 Debug.Log("Blocked");
-                                normalHits -= 1;
+                                normalHits -= 1; 
                             }
                         }
                         for (var i = 0; i < OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<Weapon>().GetAttacks(); i++) // For loop for each attack of the weapon

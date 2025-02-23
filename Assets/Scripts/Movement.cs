@@ -13,14 +13,8 @@ public class Movement : MonoBehaviour
     public bool dashMode = false; // Dash Switch
     public bool chargeMode = false; // Charge Switch
 
-    public enum modeUsed
-    {
-        movement,
-        dash,
-        charge,
-        stationary
-    };
-    public modeUsed currentMode;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,28 +25,24 @@ public class Movement : MonoBehaviour
     {
         if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getMovingUsed() == false)
         {
-            //movementMode = !movementMode; // Toggles Movement Mode on and off
-            //Debug.Log("Movement mode=" + movementMode.ToString()); // Writes a message in the console for debugging
-            currentMode = modeUsed.movement;
+            movementMode = !movementMode; // Toggles Movement Mode on and off
+            Debug.Log("Movement mode=" + movementMode.ToString()); // Writes a message in the console for debugging
         }
     }
     public void ToggleDashMode()
     {
         if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getDashingUsed() == false)
-        {
-            //dashMode = !dashMode; // Toggles Dash Mode on and off
-            //Debug.Log("Dash mode=" + dashMode.ToString()); // Writes a message in the console for debugging
-            currentMode = modeUsed.dash;
-
+        { 
+        dashMode = !dashMode; // Toggles Dash Mode on and off
+        Debug.Log("Dash mode=" + dashMode.ToString()); // Writes a message in the console for debugging
         }
     }
     public void ToggleChargeMode()
     {
         if ((OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getChargingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getDashingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getMovingUsed() == false))
-         {
-            //chargeMode = !chargeMode; // Toggles Charge Mode on and off
-            //Debug.Log("Charge mode=" + chargeMode.ToString()); // Writes a message in the console for debugging
-            currentMode = modeUsed.charge;
+        { 
+        chargeMode = !chargeMode; // Toggles Charge Mode on and off
+        Debug.Log("Charge mode=" + chargeMode.ToString()); // Writes a message in the console for debugging
         }
     }
 
@@ -152,22 +142,4 @@ public class Movement : MonoBehaviour
         OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
         OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setChargingUsed();
     }
-
-    void Move(Vector2 Location, modeUsed mode)
-    {
-        OperativeSelected.Instance.operativeSelected[0].transform.position = Location; //Location of the operative
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
-
-        switch (mode)
-        {
-            case modeUsed.movement:
-                OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setMovingUsed();
-                break;
-        }
-    }
-
-   // public void SetUsed()
-    //{
-       // used = false;
-    //}
 }

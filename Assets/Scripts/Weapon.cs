@@ -4,35 +4,35 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public int attackRoll;
-    public int attacks;
-    public int normalDamage;
-    public int criticalDamage;
-    public bool rangedWeapon;
-    public bool meleeWeapon;
+    public int attackRoll; // The roll required for the attack to go through
+    public int attacks; // The number of attacks that the weapon can do
+    public int normalDamage; // The damage dealt if the roll gets past the attack roll, but the roll isn't a six
+    public int criticalDamage; // The damage dealt if the roll is a six
+    public bool rangedWeapon; // If the weapon is ranged, it can shoot
+    public bool meleeWeapon; // If the weapon is melee, it can do melee
 
     public int GetAttacks()
     {
-        return attacks;  // Returns wounds
+        return attacks;  // Returns attacks
     }
     public int GetAttackRoll()
     {
-        return attackRoll;  // Returns wounds
+        return attackRoll;  // Returns attack roll
     }
     public int GetNormalDamage()
     {
-        return normalDamage;  // Returns wounds
+        return normalDamage;  // Returns normal damage
     }
     public int GetCriticalDamage()
     {
-        return criticalDamage;  // Returns wounds
+        return criticalDamage;  // Returns critical damage
     }
     public bool GetRangedWeapon()
     {
-        return rangedWeapon;
+        return rangedWeapon; // Returns ranged weapon
     }
     public bool GetMeleeWeapon()
     {
-        return meleeWeapon;
+        return meleeWeapon; // Returns melee weapon
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class TextAppears : MonoBehaviour
 {
     public GameObject Actions; //Getting the Actions game object
-    public Movement movement;
-    public Shoot shoot;
-    public Melee melee;
+    public Movement movement; // From movement class
+    public Shoot shoot; // From shoot class
+    public Melee melee; // From melee class
 
     // Update is called once per frame
     void Update()
