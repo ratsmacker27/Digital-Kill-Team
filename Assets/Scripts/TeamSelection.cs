@@ -8,6 +8,7 @@ public class TeamSelection : MonoBehaviour
     public int Roll;
     public int Team1Roll = 0;
     public int Team2Roll = 0;
+    public int TotalAPLUsed = 0;
     public bool Team1Turn = false;
     public bool Team2Turn = false;
     public GameObject team1Announcement;
@@ -60,5 +61,9 @@ public class TeamSelection : MonoBehaviour
     {
         Team1Turn = !Team1Turn;
         Team2Turn = !Team2Turn;
+    }
+    public int getTotalAPLUsed()
+    {
+        return TotalAPLUsed;
     }
 }

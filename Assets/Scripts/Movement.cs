@@ -14,10 +14,6 @@ public class Movement : MonoBehaviour
     public bool dashMode = false; // Dash Switch
     public bool chargeMode = false; // Charge Switch
     public TMP_Text movementText;
-    public GameObject movementDistance;
-    private float timeToDisappear = 3f;
-    private float timeOnScreen;
-
 
     // Start is called before the first frame update
     void Start()
@@ -62,15 +58,13 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)) // If the raycast hit something
                 {
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
+                    {
+                        movementMode = false;
+                    }
                     // Calculate the distance from the original position to the new position
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y));
                     movementText.text = ("Distance: " + distance).ToString(); // Writes a message with the distance
-                    timeOnScreen = Time.time + timeToDisappear;
-                    movementDistance.transform.gameObject.SetActive(true);
-                    if (Time.time >= timeOnScreen)
-                    {
-                        movementDistance.transform.gameObject.SetActive(false);
-                    }
                     // If the distance is less or equal than the movement characteristic of the operative
                     if (distance <= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().GetMovement())
                     {
@@ -80,8 +74,8 @@ public class Movement : MonoBehaviour
                     {
                         movementMode = false; //Turns off movement mode if the distance is too great
                     }
-                    
                 }
+
             }
         }
         if (dashMode)
@@ -93,14 +87,12 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)) // If the raycast hit something
                 {
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
+                    {
+                        dashMode = false;
+                    }
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y)); // Calculate the distance from the original position to the new position
                     movementText.text = ("Distance: " + distance).ToString();// Writes a message with the distance
-                    timeOnScreen = Time.time + timeToDisappear;
-                    movementDistance.transform.gameObject.SetActive(true);
-                    if (Time.time >= timeOnScreen)
-                    {
-                        movementDistance.transform.gameObject.SetActive(false);
-                    }
                     if (distance <= 4) // If the distance is less or equal than the dash (static)
                     {
                         
@@ -122,14 +114,12 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, engagementRange)) // If the raycast hit something
                 {
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
+                    {
+                        chargeMode = false;
+                    }
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y)); // Calculate the distance from the original position to the new position
                     movementText.text = ("Distance: " + distance).ToString();// Writes a message with the distance
-                    timeOnScreen = Time.time + timeToDisappear;
-                    movementDistance.transform.gameObject.SetActive(true);
-                    if (Time.time >= timeOnScreen)
-                    {
-                        movementDistance.transform.gameObject.SetActive(false);
-                    }
                     if ((distance <= (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().GetMovement() + 2))) // && (OperativeSelected.Instance.operativeSelected[0]))
                     {// If the distance is less or equal than the movement characteristic of the operative plus 2 units AND the charge ends near 1 unit within an enemy
                         Charge(hit.point); // Move the operative to the new position

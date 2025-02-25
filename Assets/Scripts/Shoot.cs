@@ -17,13 +17,9 @@ public class Shoot : MonoBehaviour
     public LayerMask clickable; // Only the layer with clickable areas
     public LayerMask Terrain; // Layer for terrain
     public TMP_Text initialHealthText;
-    public GameObject initialHealth;
     public TMP_Text hitsText;
-    public GameObject hitsObject;
     public TMP_Text savesText;
-    public GameObject savesObject;
     public TMP_Text finalHealthText;
-    public GameObject finalHealth;
     // Start is called before the first frame update
 
     void Start()
@@ -111,7 +107,7 @@ public class Shoot : MonoBehaviour
 
                         if (Physics.Linecast(fromPosition, toPosition, out RaycastHit hitInfo, Terrain)) // If there is a terrain inbetween the operative shooting and the operative hit
                         {
-                            if (hit.transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true)
+                            if (hit.transform.gameObject.GetComponent<Operative>().getEngagedOrder() == true) // If enemy operative has an engaged order
                             {
                                 if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude) - hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
                                 {
@@ -119,12 +115,12 @@ public class Shoot : MonoBehaviour
                                     normalHits -= 1;
                                 }
                             }
-                            if (hit.transform.gameObject.GetComponent<Operative>().getConcealOrder() == true)
+                            if (hit.transform.gameObject.GetComponent<Operative>().getConcealOrder() == true) // If enemy operative has a conceal order
                             {
-                                if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude) - hitInfo.distance) <= 1) //Cover Rule, hitInfo.distance is the distance from the Terrain Piece
+                                if (Mathf.Abs((fromPosition.magnitude - toPosition.magnitude) - hitInfo.distance) >= 1) //Obscured Rule, hitInfo.distance is the distance from the Terrain Piece
                                 {
                                     normalHits = 0;
-                                    criticalHits = 0;
+                                    criticalHits = 0; //Block all the damage
                                 }
                             }
                         }

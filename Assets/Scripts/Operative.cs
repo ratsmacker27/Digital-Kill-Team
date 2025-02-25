@@ -9,8 +9,7 @@ public class Operative : MonoBehaviour
     public GameObject operative;
     private float movementCharateristic = 6;
     private int initialAPL = 3;
-    private int APL = 3;
-    private int groupActivation = 1;
+    private int APL = 2;
     private int defDice = 3;
     private int save = 3;
     private int wounds = 12;
@@ -29,6 +28,8 @@ public class Operative : MonoBehaviour
     public bool dashingUsed = false;
     public bool chargingUsed = false;
     public bool meleeUsed = false;
+    public OperativeSelected TurningPointCount;
+ 
 
 
     void Start()
@@ -49,6 +50,7 @@ public class Operative : MonoBehaviour
         if(APL == 0)
         {
             OperativeSelected.Instance.ClearAll();
+            Turns.TotalAPLUsed += initialAPL;
             APL = initialAPL;
             activate = true;
             Turns.SwitchTurns();
@@ -62,6 +64,17 @@ public class Operative : MonoBehaviour
         {
             OnDestroy();
             operative.SetActive(false);
+        }
+        if (Turns.getTotalAPLUsed() == (initialAPL * (TurningPointCount.operativeTeam1.Count + TurningPointCount.operativeTeam2.Count)))
+        {
+            for (int i = 0; i < TurningPointCount.operativeTeam1.Count; i++)
+            {
+                TurningPointCount.operativeTeam1[i].transform.gameObject.GetComponent<Operative>().SetUsed();
+            }
+            for (int i = 0; i < TurningPointCount.operativeTeam2.Count; i++)
+            {
+                TurningPointCount.operativeTeam2[i].transform.gameObject.GetComponent<Operative>().SetUsed();
+            }
         }
     }
     void OnDestroy()
@@ -77,7 +90,10 @@ public class Operative : MonoBehaviour
     }
 
 
-
+    public void SetUsed()
+    {
+        activate = !activate;
+    }
 
     public void SetActive(bool active)
     {

@@ -16,13 +16,9 @@ public class Melee : MonoBehaviour
     public LayerMask clickable; // Only the layer with clickable areas
                                 // Start is called before the first frame update
     public TMP_Text initialHealthText;
-    public GameObject initialHealth;
     public TMP_Text hitsText;
-    public GameObject hitsObject;
     public TMP_Text savesText;
-    public GameObject savesObject;
     public TMP_Text finalHealthText;
-    public GameObject finalHealth;
     void Start()
     {
         cam = Camera.main;
