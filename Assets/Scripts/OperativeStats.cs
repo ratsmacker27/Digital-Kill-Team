@@ -31,15 +31,15 @@ public class OperativeStats : MonoBehaviour
             {
                 attacksText.text = ("Number of Attacks: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetAttacks()).ToString();
                 attackRollText.text = ("Attack Roll: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetAttackRoll() + "+").ToString();
-                normalDamageText.text = ("Normal Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetCriticalDamage()).ToString();
-                criticalDamageText.text = ("Critical Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetNormalDamage()).ToString();
+                normalDamageText.text = ("Normal Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetNormalDamage()).ToString();
+                criticalDamageText.text = ("Critical Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<MeleeWeapon>().GetCriticalDamage()).ToString();
             }
             if (shootScript.getShootingMode() == true)
             {
                 attacksText.text = ("Number of Attacks: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetAttacks()).ToString();
                 attackRollText.text = ("Attack Roll: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetAttackRoll() + "+").ToString();
-                normalDamageText.text = ("Normal Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetCriticalDamage()).ToString();
-                criticalDamageText.text = ("Critical Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetNormalDamage()).ToString();
+                normalDamageText.text = ("Normal Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetNormalDamage()).ToString();
+                criticalDamageText.text = ("Critical Damage: " + OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponentInChildren<RangedWeapon>().GetCriticalDamage()).ToString();
             }
         }
         
