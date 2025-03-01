@@ -30,6 +30,10 @@ public class Shoot : MonoBehaviour
     {
         shootingMode = !shootingMode; // Changes the shooting mode 
     }
+    public bool getShootingMode()
+    {
+        return shootingMode;
+    }
     // Update is called once per frame
     void Update()
     {

@@ -33,7 +33,7 @@ public class OperativeSelected : MonoBehaviour
         {
             operativeSelected.Add(operativeToAdd);
             OperativeReady=true;
-            operativeToAdd.GetComponent<Operative>().SetActive(true);
+            operativeToAdd.GetComponent<Operative>().SetActiveOperative(true);
             operativeToAdd.transform.GetChild(0).gameObject.SetActive(true);
         }
 

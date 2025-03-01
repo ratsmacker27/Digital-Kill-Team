@@ -14,11 +14,12 @@ public class TeamSelection : MonoBehaviour
     public GameObject team1Announcement;
     public GameObject team2Announcement;
     private float timeToDisappear = 3f;
-
+    public Operative operative;
+    public OperativeSelected selected;
 
     // Start is called before the first frame update
 
-    void Update()
+    void Start()
     {
         while (Team1Roll == Team2Roll)
         {
@@ -46,7 +47,40 @@ public class TeamSelection : MonoBehaviour
             {
                 team2Announcement.transform.gameObject.SetActive(false);
             }
+        }
+    }
+    void Update()
+    {
+        if (Team1Roll > Team2Roll)
+        {
+            team1Announcement.transform.gameObject.SetActive(true);
+            if (Time.time >= timeToDisappear)
+            {
+                team1Announcement.transform.gameObject.SetActive(false);
+            }
 
+        }
+        if (Team1Roll < Team2Roll)
+        {
+            team2Announcement.transform.gameObject.SetActive(true);
+            if (Time.time >= timeToDisappear)
+            {
+                team2Announcement.transform.gameObject.SetActive(false);
+            }
+        }
+        if (getTotalAPLUsed() == (operative.GetInitialAPL() * (selected.operativeTeam1.Count + selected.operativeTeam2.Count)))
+        {
+            for (int i = 0; i < selected.operativeTeam1.Count; i++)
+            {
+                selected.operativeTeam1[i].transform.gameObject.GetComponent<Operative>().SetActiveOperative(false);
+                selected.operativeTeam2[i].transform.gameObject.GetComponent<Operative>().SetActiveBool();
+            }
+            for (int i = 0; i < selected.operativeTeam2.Count; i++)
+            {
+                selected.operativeTeam2[i].transform.gameObject.GetComponent<Operative>().SetActiveOperative(false);
+                selected.operativeTeam2[i].transform.gameObject.GetComponent<Operative>().SetActiveBool();
+            }
+            TotalAPLUsed = 0;
         }
     }
     public bool GetTeam1()

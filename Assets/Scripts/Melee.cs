@@ -27,6 +27,10 @@ public class Melee : MonoBehaviour
     {
         meleeMode = !meleeMode;
     }
+    public bool getMeleeMode()
+    {
+        return meleeMode; 
+    }
     // Update is called once per frame
     void Update()
     {

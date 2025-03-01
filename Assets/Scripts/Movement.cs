@@ -58,10 +58,6 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)) // If the raycast hit something
                 {
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
-                    {
-                        movementMode = false;
-                    }
                     // Calculate the distance from the original position to the new position
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y));
                     movementText.text = ("Distance: " + distance).ToString(); // Writes a message with the distance
@@ -87,10 +83,6 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)) // If the raycast hit something
                 {
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
-                    {
-                        dashMode = false;
-                    }
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y)); // Calculate the distance from the original position to the new position
                     movementText.text = ("Distance: " + distance).ToString();// Writes a message with the distance
                     if (distance <= 4) // If the distance is less or equal than the dash (static)
@@ -114,10 +106,6 @@ public class Movement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, engagementRange)) // If the raycast hit something
                 {
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrain))
-                    {
-                        chargeMode = false;
-                    }
                     float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y)); // Calculate the distance from the original position to the new position
                     movementText.text = ("Distance: " + distance).ToString();// Writes a message with the distance
                     if ((distance <= (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().GetMovement() + 2))) // && (OperativeSelected.Instance.operativeSelected[0]))
