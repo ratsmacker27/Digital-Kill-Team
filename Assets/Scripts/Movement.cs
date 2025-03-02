@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
     public bool movementMode = false; // Movement Switch
     public bool dashMode = false; // Dash Switch
     public bool chargeMode = false; // Charge Switch
-    public TMP_Text movementText;
+    public TMP_Text movementText; // Text to display the distance in the distance textbox
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class Movement : MonoBehaviour
     }
     public void ToggleMovementMode()
     {
-        if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getMovingUsed() == false)
+        if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getMovingUsed() == false) // If normal movement hasn't been used
         {
             movementMode = !movementMode; // Toggles Movement Mode on and off
             Debug.Log("Movement mode=" + movementMode.ToString()); // Writes a message in the console for debugging
@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour
     }
     public void ToggleDashMode()
     {
-        if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getDashingUsed() == false)
+        if (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getDashingUsed() == false) // If dashing hasn't been used
         { 
         dashMode = !dashMode; // Toggles Dash Mode on and off
         Debug.Log("Dash mode=" + dashMode.ToString()); // Writes a message in the console for debugging
@@ -39,8 +39,8 @@ public class Movement : MonoBehaviour
     public void ToggleChargeMode()
     {
         if ((OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getChargingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getDashingUsed() == false) && (OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().getMovingUsed() == false))
-        { 
-        chargeMode = !chargeMode; // Toggles Charge Mode on and off
+        { // If normal movement, dashing and charging hasn't been used
+            chargeMode = !chargeMode; // Toggles Charge Mode on and off
         Debug.Log("Charge mode=" + chargeMode.ToString()); // Writes a message in the console for debugging
         }
     }
@@ -48,7 +48,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (movementMode) // If the movement mode is on
+        if (movementMode) // If in movement mode
         {
 
             if (Input.GetMouseButtonDown(0)) // If the user clicks
@@ -59,7 +59,7 @@ public class Movement : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)) // If the raycast hit something
                 {
                     // Calculate the distance from the original position to the new position
-                    float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y));
+                    float distance = Vector2.Distance(new Vector2(OperativeSelected.Instance.operativeSelected[0].transform.position.x, OperativeSelected.Instance.operativeSelected[0].transform.position.y), new Vector2(hit.point.x, hit.point.y)); // Calculate the distance from the original position to the new position
                     movementText.text = ("Distance: " + distance).ToString(); // Writes a message with the distance
                     // If the distance is less or equal than the movement characteristic of the operative
                     if (distance <= OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().GetMovement())
@@ -74,7 +74,7 @@ public class Movement : MonoBehaviour
 
             }
         }
-        if (dashMode)
+        if (dashMode) // If in dash Mode
         {
             if (Input.GetMouseButtonDown(0)) // If the user clicks
             {
@@ -97,7 +97,7 @@ public class Movement : MonoBehaviour
                 }
             }
         }
-        if (chargeMode)
+        if (chargeMode) // If in charge mode
         {
             if (Input.GetMouseButtonDown(0)) // If the user clicks
             {
@@ -125,21 +125,21 @@ public class Movement : MonoBehaviour
     {
         OperativeSelected.Instance.operativeSelected[0].transform.position = Location; //Location of the operative
         movementMode = false; // Disables movement mode
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setMovingUsed();
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1); //Reduce user operative APL by 1
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setMovingUsed(); //Makes it so the actions can't be used again
     }
     void Dash(Vector2 Location)
     {
         OperativeSelected.Instance.operativeSelected[0].transform.position = Location; //Location of the operative
         dashMode = false; // Disables dash mode
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setDashingUsed();
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1); //Reduce user operative APL by 1
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setDashingUsed(); //Makes it so the actions can't be used again
     }
     void Charge(Vector2 Location)
     {
         OperativeSelected.Instance.operativeSelected[0].transform.position = Location; //Location of the operative
         chargeMode = false; // Disables charge mode
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1);
-        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setChargingUsed();
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().SetAPL(1); //Reduce user operative APL by 1
+        OperativeSelected.Instance.operativeSelected[0].transform.gameObject.GetComponent<Operative>().setChargingUsed(); //Makes it so the actions can't be used again
     }
 }

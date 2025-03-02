@@ -6,39 +6,39 @@ using UnityEngine;
 public class Operative : MonoBehaviour
 {
     // Variables of an Operative
-    public GameObject operative;
-    private float movementCharateristic = 6;
-    private int initialAPL = 2;
-    public int APL = 2;
-    private int defDice = 3;
-    private int save = 3;
-    private int wounds = 12;
-    public bool currentActiveOperative = false;
-    public bool activate = false;
-    public int team;
-    public bool EngagedOrder = false;
-    public bool ConcealedOrder = false;
-    public TeamSelection Turns;
-    public bool obscured = false;
+    public GameObject operative; // The gameObject of the operative
+    private float movementCharateristic = 6; // Movement characteristic of an operative
+    private int initialAPL = 2; // Initial action points of an operative
+    public int APL = 2; // Action points of an operative
+    private int defDice = 3; // Defence dice of an operative
+    private int save = 3; // Save roll of an operative
+    private int wounds = 12; // Wounds (Health) of an operative
+    public bool currentActiveOperative = false; //If it is the current operative
+    public bool activate = false; // If the operative has been activated
+    public int team; // The team of the operative
+    public bool EngagedOrder = false; // If the operative has an engage order
+    public bool ConcealedOrder = false; // If the operative has an conceal order
+    public TeamSelection Turns; // Using the TeamSelection class
 
 
-    public bool shootingUsed = false;
-    public bool movingUsed = false;
-    public bool dashingUsed = false;
-    public bool chargingUsed = false;
-    public bool meleeUsed = false;
-    public OperativeSelected TurningPointCount;
+
+    public bool shootingUsed = false; // If the Shoot action has been used
+    public bool movingUsed = false; // If the Normal Movement action has been used
+    public bool dashingUsed = false; // If the Dashing action has been used
+    public bool chargingUsed = false; // If the Charging action has been used
+    public bool meleeUsed = false; // If the Melee action has been used
+    public OperativeSelected TurningPointCount; // Using the OperativeSelected class
  
 
 
     void Start()
     {
 
-        if (team == 0)
+        if (team == 0) // If operative is in Team 1
         {
             OperativeSelected.Instance.operativeTeam1.Add(this.gameObject); // Adds the Operatives to the list of operatives on the map
         }
-        if (team == 1)
+        if (team == 1) // If operative is in Team 2
         {
             OperativeSelected.Instance.operativeTeam2.Add(this.gameObject); // Adds the Operatives to the list of operatives on the map
         }
@@ -46,133 +46,133 @@ public class Operative : MonoBehaviour
     }
     void Update()
     {
-        if(APL == 0)
+        if(APL == 0) // If operative has no action points
         {
-            OperativeSelected.Instance.ClearAll();
-            Turns.TotalAPLUsed += initialAPL;
-            APL = initialAPL;
-            activate = true;
-            Turns.SwitchTurns();
-            shootingUsed = false;
-            movingUsed = false;
-            dashingUsed = false;
-            chargingUsed = false;
-            meleeUsed = false;
+            OperativeSelected.Instance.ClearAll(); // Make the operative unable to activate
+            Turns.TotalAPLUsed += initialAPL; // Add the action points to the action points used
+            APL = initialAPL; // Give all of the action points back
+            activate = true; // Make the operative activated
+            Turns.SwitchTurns(); // Switch the turn to the other team
+            shootingUsed = false; // Make the activated operative be able to use the Shooting action
+            movingUsed = false; // Make the activated operative be able to use the Normal Movement action
+            dashingUsed = false; // Make the activated operative be able to use the Dashing action
+            chargingUsed = false; // Make the activated operative be able to use the Charging action
+            meleeUsed = false; // Make the activated operative be able to use the Melee action
         }
-        if(wounds <= 0)
+        if(wounds <= 0) // If the operative has no wounds
         {
-            OnDestroy();
-            operative.SetActive(false);
+            OnDestroy(); // Destroy the operative object
+            operative.SetActive(false); // Set the operative activation false
         }
     }
     void OnDestroy()
     {
-        if (team == 0)
+        if (team == 0) // If operative is in Team 1
         {
             OperativeSelected.Instance.operativeTeam1.Remove(this.gameObject); // Removes the Operatives to the list of operatives on the map
         }
-        if (team == 1)
+        if (team == 1) // If operative is in Team 2
         {
             OperativeSelected.Instance.operativeTeam2.Remove(this.gameObject); // Removes the Operatives to the list of operatives on the map
         }
     }
 
 
-    public void SetActiveOperative(bool active)
+    public void SetActiveOperative(bool active) //Setter method
     {
         currentActiveOperative=active; // Makes the operative ready to be activated.
     }
-    public void SetActiveBool()
+    public void SetActiveBool() //Setter method
     {
-        activate = false;
+        activate = false; // Set activate off
     }
 
-    public int GetWounds()
+    public int GetWounds() //Getter method
     {
         return wounds;  // Returns wounds
     }
 
-    public void SetWounds(int dmg)
+    public void SetWounds(int dmg) //Setter method
     {
         wounds = wounds - dmg; // Set the wounds
     }
-    public int GetDefenceDice()
+    public int GetDefenceDice() //Getter method
     {
-        return defDice;  // Returns wounds
+        return defDice;  // Returns defence dice
     }
-    public int GetSave()
+    public int GetSave() //Getter method
     {
-        return save;  // Returns wounds
+        return save;  // Returns saves
     }
-    public int GetAPL()
+    public int GetAPL() //Getter method
     {
         return APL;
     }
-    public void SetAPL(int exhausted)
+    public void SetAPL(int exhausted) //Setter method
     {
         APL = APL - exhausted;
     }
-    public int GetInitialAPL()
+    public int GetInitialAPL() //Getter method
     {
         return initialAPL;
     }
-    public float GetMovement()
+    public float GetMovement() //Getter method
     {
         return movementCharateristic;  // Returns wounds
     }
-    public bool GetActive()
+    public bool GetActive() //Getter method
     {
         return activate;
     }
-    public int GetTeam()
+    public int GetTeam() //Getter method
     {
         return team;
     }
-    public bool getConcealOrder()
+    public bool getConcealOrder() //Getter method
     {
         return ConcealedOrder;
     }
-    public bool getEngagedOrder()
+    public bool getEngagedOrder() //Getter method
     {
         return EngagedOrder;
     }
-    public bool getShootingUsed()
+    public bool getShootingUsed() //Getter method
     {
         return shootingUsed;
     }
-    public bool getMovingUsed()
+    public bool getMovingUsed() //Getter method
     {
         return movingUsed;
     }
-    public bool getDashingUsed()
+    public bool getDashingUsed() //Getter method
     {
         return dashingUsed;
     }
-    public bool getChargingUsed()
+    public bool getChargingUsed() //Getter method
     {
         return chargingUsed;
     }
-    public bool getMeleeUsed()
+    public bool getMeleeUsed() //Getter method
     {
         return meleeUsed;
     }
-    public void setShootingUsed()
+    public void setShootingUsed() //Setter method
     {
         shootingUsed = !shootingUsed;
     }
-    public void setMovingUsed()
+    public void setMovingUsed() //Setter method
     {
         movingUsed = !movingUsed;
     }
-    public void setDashingUsed()
+    public void setDashingUsed() //Setter method
     {
         dashingUsed = !dashingUsed;
     }
-    public void setChargingUsed()
+    public void setChargingUsed() //Setter method
     {
         chargingUsed = !chargingUsed;
     }
-    public void setMeleeUsed()
+    public void setMeleeUsed() //Setter method
     {
         meleeUsed = !meleeUsed;
     }

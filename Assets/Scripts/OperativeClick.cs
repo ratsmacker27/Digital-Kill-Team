@@ -21,27 +21,27 @@ public class OperativeClick : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0)) // If the mouse is clicked
         {
-            if (Turns.GetTeam1() == true)
+            if (Turns.GetTeam1() == true) // If it is Team 1's turn
             {
                 RaycastHit hit; // Make a raycast
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition); // Put the raycast at the mouse position
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)) // If it clicks a clickable object
                 {
-                    if (hit.transform.gameObject.GetComponent<Operative>().GetActive() == false && hit.transform.gameObject.GetComponent<Operative>().GetTeam() == 0)
+                    if (hit.transform.gameObject.GetComponent<Operative>().GetActive() == false && hit.transform.gameObject.GetComponent<Operative>().GetTeam() == 0) // If the operative hasn't been activated and is in Team 1
                     {
                         OperativeSelected.Instance.ClickSelect(hit.collider.gameObject); // Puts the Operative in the selected operative list
                     }
                 }
             }
-            if (Turns.GetTeam2() == true)
+            if (Turns.GetTeam2() == true) // If it is Team 2's turn
             {
                 RaycastHit hit; // Make a raycast
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition); // Put the raycast at the mouse position
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)) // If it clicks a clickable object
                 {
-                    if (hit.transform.gameObject.GetComponent<Operative>().GetActive() == false && hit.transform.gameObject.GetComponent<Operative>().GetTeam() == 1)
+                    if (hit.transform.gameObject.GetComponent<Operative>().GetActive() == false && hit.transform.gameObject.GetComponent<Operative>().GetTeam() == 1) // If the operative hasn't been activated and is in Team 2
                     {
                         OperativeSelected.Instance.ClickSelect(hit.collider.gameObject); // Puts the Operative in the selected operative list
                     }
